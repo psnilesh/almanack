@@ -1,8 +1,9 @@
 ---
+title: A closer look at Return on Equity
 layout: post
-title: "A closer look at Return on Equity"
-tags: Investing
-excerpt_separator: <!--more-->
+tags:
+- Investing
+excerpt_separator: "<!--more-->"
 ---
 
 Return on Equity (ROE) is one of the key performance metrics evaluated while reviewing the fundamentals of a company. While it involves little judgement and is easy to compute, in this article, I'm going to look beyond the ratio to gain an intuitive and deeper understanding about what it really conveys about the business. <!--more--> As with any financial metric, its relation to business must be closely studied before making any investment decisions.
