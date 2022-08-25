@@ -4,7 +4,7 @@ title: "About"
 permalink: /about/
 ---
 
-Looking to fill this blog with stories from my various fields of interest as time permits. 
+A blog for stories from my various fields of interest, written as a hobby.
 
 ## Credits 
 * Site Made with Jekyll using the [Tale]((https://github.com/chesterhow/tale)) theme.
