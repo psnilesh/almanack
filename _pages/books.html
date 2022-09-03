@@ -9,8 +9,8 @@ permalink: /books/
 <style type="text/css" media="screen">
     .gr_custom_container_1662186174 {
         /* customize your Goodreads widget container here*/
-        border: 3px solid gray;
-        border-radius: 10px;
+        border: 1px solid black;
+        border-radius: 5px;
         padding: 10px 5px 10px 5px;
         background-color: #ffffff;
         color: #000000;
@@ -145,10 +145,10 @@ permalink: /books/
         float: left;
         border-radius: 5px;
         background-color: #fff;
-        border: solid #683205 10px;
+        /* border: solid #683205 10px;
         -webkit-box-shadow: 0px 0px 4px 1px #595959, inset 0px 0px 0px 1px #7d730b;
         -moz-box-shadow: 0px 0px 4px 1px #595959, inset 0px 0px 0px 1px #7d730b;
-        box-shadow: 0px 0px 4px 1px #595959, inset 0px 0px 0px 1px #7d730b;
+        box-shadow: 0px 0px 4px 1px #595959, inset 0px 0px 0px 1px #7d730b; */
         padding: 15px 0 0px 15px;
         width: 100%;
         height: 400px;
@@ -166,9 +166,18 @@ permalink: /books/
         width: 100px;
         float: left;
     }
+    #gr_updates_widget iframe {
+        overflow-y: scroll;
+    }
 </style>
 <div id="gr_updates_widget">
-    <iframe sandbox id="the_iframe" src="https://goodreads.com/widgets/user_update_widget?height=400&num_updates=20&user=38991083&width=600" width="700" height="330" frameborder="0"></iframe>
+    <iframe
+        sandbox
+        id="the_iframe"
+        src="https://goodreads.com/widgets/user_update_widget?height=400&num_updates=20&user=38991083&width=600"
+        width="700"
+        height="330"
+        frameborder="0"></iframe>
     <div id="gr_footer">
         <a href="https://www.goodreads.com/"><img alt="Goodreads: Book reviews, recommendations, and discussion" src="https://s.gr-assets.com/images/layout/goodreads_logo_140.png" /></a>
     </div>
