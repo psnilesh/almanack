@@ -115,7 +115,7 @@ fun main(): Unit = runBlocking {
             async {
             	error("async -> async error")
         	}
-        } catch(e: IllegalStateExeption) {
+        } catch(e: IllegalStateException) {
             println("This catch will not be called.")
         }
     }
@@ -198,10 +198,10 @@ fun main(): Unit = runBlocking {
 </code>
 </pre>
 
-Above program will show that siblings job1 and job2 was cancelled when a child co-routine failed to handle an exception (or in this case, deliberately threw one). 
+Above program will show that siblings job1 and job2 was cancelled when a child coroutine failed to handle an exception (or in this case, deliberately threw one). 
 
 ### Point 5) Use a Supervisor job to prevent auto cacellation of coroutine parent and siblings
-So far we've seen coroutines cancelling everything when an Exception is left unhandled. There are use-cases where this isn't acceptable. To prevent a coroutine from propagating its error to parent and thus triggering a chain cancellation, create coroutine scopes with `SupervisorJob`. Coroutines launched as the **immediate** child of `SupervisorJob` do not propagate exceptions to their parents. In fact, none of its ancestors or siblings are even aware that it has failed. This is demonstrated by the program below.
+So far we've seen coroutines cancelling everything when an Exception is left unhandled. There are use-cases where this isn't acceptable. To prevent a coroutine from propagating its error to parent and thus triggering a chain cancellation, create coroutine scopes with `SupervisorJob`. Coroutines launched as the **immediate** child of `SupervisorJob` do not propagate exceptions to their parents. In fact, none of their ancestors or siblings are even aware that they have failed. This is demonstrated by the program below.
 
 <pre>
 <code class='kotlin-playground'>
