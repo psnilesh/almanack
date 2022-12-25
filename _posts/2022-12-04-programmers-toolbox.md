@@ -11,3 +11,6 @@ A collection of opinionated howtos for computer programmers.
 
 ## Guides
 * [Vim tips for the intermediate Vim user](https://jemma.dev/blog/intermediate-vim-tips)
+
+## Cheatsheets
+* [Comprehensive Python Cheatsheet](https://gto76.github.io/python-cheatsheet)
