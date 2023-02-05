@@ -14,3 +14,6 @@ A collection of opinionated howtos for computer programmers.
 
 ## Cheatsheets
 * [Comprehensive Python Cheatsheet](https://gto76.github.io/python-cheatsheet)
+
+## Webapps
+* [Escalidraw - quick architecture diagrams](https://excalidraw.com/)
