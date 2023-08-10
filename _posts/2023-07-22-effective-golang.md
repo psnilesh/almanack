@@ -8,6 +8,13 @@ layout: post
 
 This is a collection of best practices and idioms I keep close for writing clean, concise and readable programs in [Go programming language.](https://go.dev/)
 
+Jump to ...
+
+* TOC
+{:toc}
+
+---
+
 ## 1. Initializing structures with optional parameters
 
 Golang does not support optional function arguments, nor constructors for initializing structures. This makes initializing large structures with lot of optional paramters difficult. Commander Rob Pike came up with a good solution to this problem that is demonstrated in the snippet next.
@@ -138,5 +145,137 @@ So what used to be 8 bytes for `x`, 16 for `y` and another 8 for `z` in `MyStruc
 
 In the end, struct packing is an effective technique to reduce your program's memory consumption, though it may add a small runtime overhead. Like when doing any other performance improvements, use the data from profiling your program before and after the change to make a decision.
 
+## 3. When are golang interfaces nil ?
+Interfaces in golang have two fields, data type and value (pointer to an instance of data type). An interface is nil only when **both** these values are nil. This can be surprising to new
+go devs.
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+type myError struct {
+	//
+}
+
+func (e *myError) Error() string {
+	return "Stub message"
+}
+
+func giveIncorrectError(i int) error {
+	// Golang has already learned the type of interface is myError,
+	// so nil checks on error returned from this method will always
+	// be false
+	var err *myError
+
+	if i < 0 {
+		err = &myError{}
+	}
+
+	return err
+}
+
+func giveCorrectError(i int) error {
+	// No idea what kind of object this interface is pointing to
+	// so nil checks will return true
+	var err error
+
+	if i < 0 {
+		err = &myError{}
+	}
+
+	return err
+}
+
+func main() {
+	var e1 error
+	fmt.Println(e1 == nil) // Prints true
+
+	var myErr *myError = nil
+	var e2 error = myErr
+	fmt.Println(e2 == nil) // Prints false
+
+	fmt.Println(giveIncorrectError(-1) == nil) // Prints false
+	fmt.Println(giveIncorrectError(1) == nil)  // Prints false
+
+	fmt.Println(giveCorrectError(-1) == nil) // Prints false
+	fmt.Println(giveCorrectError(1) == nil)  // Prints true
+}
+```
+[Try on playground](https://goplay.tools/snippet/p54yxPbfYhA)
+
+`Error` is by far the most used interface, and so it is considered a good practice to always return `nil` explicitly on success instead of using local variables to avoid overlooking this minor detail. It also helps to unit test both success and failure code paths, with assertions on the nil-ness of the error value returned.
+
+## 4. Adding request IDs to slog logs
+[Golang 1.21 introduced slog](https://go.dev/doc/go1.21) package into stdlib. It provided much needed improvements over `log` package that exists in golang today. As usual, the package from official go team comes with excellent documentation on how to use it. If you're using slog in microservices, one common use-case would be to tag logs with a unique request ID so all log events corresponding to a request can be quickly collected for debugging. We could do just append request ID to every log, but is repetitive and cluttering. Instead, below snippet shows how a custom log handler can help to avoid this repetition.
+
+```golang
+package main
+
+import (
+	"context"
+	"os"
+	"time"
+
+	"github.com/google/uuid"
+	"golang.org/x/exp/slog"
+)
+
+const (
+	CtxKeyRequestId = "RequestID"
+)
+
+type CustomSlogHandler struct {
+	slog.Handler
+}
+
+func (h CustomSlogHandler) Handle(ctx context.Context, r slog.Record) error {
+	requestId, ok := ctx.Value(CtxKeyRequestId).(string)
+	if ok {
+		r.AddAttrs(slog.Attr{CtxKeyRequestId, slog.StringValue(requestId)})
+	}
+	return h.Handler.Handle(ctx, r)
+}
+
+// package level logger
+var logger = slog.New(
+	CustomSlogHandler{
+		slog.NewJSONHandler(os.Stderr, nil),
+	},
+)
+
+func main() {
+	rootCtx := context.Background()
+
+	for i := 1; i <= 3; i += 1 {
+		go func() {
+			// Create a child context with request scoped values, or just requestId for now.
+			requestCtx := context.WithValue(rootCtx, CtxKeyRequestId, uuid.New().String())
+			logger.InfoCtx(requestCtx, "hello world")
+			time.Sleep(5 * time.Millisecond)
+			logger.InfoCtx(requestCtx, "goodbye world")
+		}()
+	}
+
+	time.Sleep(2 * time.Second)
+}
+
+// {"time":"2009-11-10T23:00:00Z","level":"INFO","msg":"hello world","RequestID":"85186bd8-ce97-47c7-b142-cbe5f91af470"}
+// {"time":"2009-11-10T23:00:00Z","level":"INFO","msg":"hello world","RequestID":"296d32fb-146b-4bac-bef0-bbefa5e0f0a2"}
+// {"time":"2009-11-10T23:00:00Z","level":"INFO","msg":"hello world","RequestID":"3207aca7-ac26-4b46-a937-018c8eb7bb39"}
+
+// {"time":"2009-11-10T23:00:00.005Z","level":"INFO","msg":"goodbye world","RequestID":"3207aca7-ac26-4b46-a937-018c8eb7bb39"}
+// {"time":"2009-11-10T23:00:00.005Z","level":"INFO","msg":"goodbye world","RequestID":"85186bd8-ce97-47c7-b142-cbe5f91af470"}
+// {"time":"2009-11-10T23:00:00.005Z","level":"INFO","msg":"goodbye world","RequestID":"296d32fb-146b-4bac-bef0-bbefa5e0f0a2"}
+```
+
+[Try on playground](https://goplay.tools/snippet/5dBKbzJO0VW)
+
+Some devs prefer creating sub-loggers with all request-scoped values and saving that on to the context to be retrieve by other methods. There is nothing wrong with this, but my personal preference is to use `context` to store only data, not objects operating on that data. As usual, some benchmarking might also help break the tie if you are stuck choosing one of these approaches.
+
 ## References
 1. [Self-referencial functions and the design of options - Rob Pike](https://commandcenter.blogspot.com/2014/01/self-referential-functions-and-design.html)
+2. [Reddit: Logging context values using slog](https://www.reddit.com/r/golang/comments/13et07w/logging_context_values_using_slog/)
+3. [Golang FAQ: Why is my nil error value not equal to nil ?](https://go.dev/doc/faq#nil_error)
