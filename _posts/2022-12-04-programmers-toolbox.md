@@ -12,6 +12,7 @@ A collection of opinionated howtos for computer programmers.
 ## Guides
 * [Vim tips for the intermediate Vim user](https://jemma.dev/blog/intermediate-vim-tips)
 * [Effective Go programming](https://go.dev/doc/effective_go)
+* [Akin's Laws of Spacecraft Design](https://spacecraft.ssl.umd.edu/akins_laws.html)
 
 ## Cheatsheets
 * [Comprehensive Python Cheatsheet](https://gto76.github.io/python-cheatsheet)
