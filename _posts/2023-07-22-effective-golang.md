@@ -279,3 +279,4 @@ Some devs prefer creating sub-loggers with all request-scoped values and saving 
 1. [Self-referencial functions and the design of options - Rob Pike](https://commandcenter.blogspot.com/2014/01/self-referential-functions-and-design.html)
 2. [Reddit: Logging context values using slog](https://www.reddit.com/r/golang/comments/13et07w/logging_context_values_using_slog/)
 3. [Golang FAQ: Why is my nil error value not equal to nil ?](https://go.dev/doc/faq#nil_error)
+4. [50 Shades of Go: Traps, Gotchas, and Common Mistakes](http://golang50shad.es/)
