@@ -17,6 +17,7 @@ A collection of opinionated howtos for computer programmers.
 ## Cheatsheets
 * [Comprehensive Python Cheatsheet](https://gto76.github.io/python-cheatsheet)
 * [Rust best practices](https://rust-unofficial.github.io/patterns/idioms/default.html)
+* [System design cheatsheet](https://systemdesign.one/system-design-interview-cheatsheet)
 
 ## Blogs
 * [pretzelhammer's Rust blog](https://github.com/pretzelhammer/rust-blog)
