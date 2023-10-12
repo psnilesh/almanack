@@ -21,6 +21,7 @@ A collection of opinionated howtos for computer programmers.
 
 ## Blogs
 * [pretzelhammer's Rust blog](https://github.com/pretzelhammer/rust-blog)
+* [AWS: Implement resource counters with Amazon DynamoDB](https://aws.amazon.com/blogs/database/implement-resource-counters-with-amazon-dynamodb/)
 
 ## Webapps
 * [Escalidraw - quick architecture diagrams](https://excalidraw.com/)
