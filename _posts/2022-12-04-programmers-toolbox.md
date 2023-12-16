@@ -27,3 +27,5 @@ A collection of opinionated howtos for computer programmers.
 * [Escalidraw - quick architecture diagrams](https://excalidraw.com/)
 * [Phind - The AI search engine for developers.](https://www.phind.com)
 
+## Coding problems
+* [200+ Algo & data structure problems & solutions](https://platformalgorithmsdatastructures.kingofinterviews.com/)
