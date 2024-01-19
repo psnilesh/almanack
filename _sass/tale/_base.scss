@@ -8,6 +8,7 @@ body {
   color: $default-color;
   margin: 0;
   padding: 0;
+  background-color: #fff;
 }
 
 html {
@@ -16,7 +17,7 @@ html {
   overflow-y: scroll;
 
   @media (min-width: 600px) {
-    font-size: 16px;
+    font-size: 18px;
   }
 }
 

@@ -4,9 +4,10 @@ tags:
 - Programming
 - Golang
 layout: post
+excerpt_separator: "<!--more-->"
 ---
 
-`Contexts` are everywhere these days. I was first introduced to it by [AWS Go SDK v2](https://github.com/aws/aws-sdk-go-v2) and its repeated use of `context.TODO()` in example snippets. I decided to spend an afternoon trying to learn what it is, and I was glad I did. When used correctly, Context allows you to manage the lifecycle of goroutines in your program, especially ensure they don't leak and / or are terminated correctly. Lets look at an exmaple.
+Context allows you to pass request scoped values to various parts of your program and manage the lifecycle of goroutines, mainly ensure they don't leak and / or are terminated correctly. <!--more--> `Contexts` are everywhere these days. I was first introduced to it by [AWS Go SDK v2](https://github.com/aws/aws-sdk-go-v2) and its repeated use of `context.TODO()` in example snippets. I decided to spend an afternoon trying to learn what it is, and I was glad I did. Lets look at an example.
 
 Imagine you've written a goroutine that writes fibonacci numbers lazily into an unbuffered channel forever, and another goroutine (e.g main) to read just N numbers from the same channel.
 
@@ -115,7 +116,7 @@ Its important to note that goroutine cancellation is co-operative. That's to say
 
 This pattern has become so popular, and can be found in Go standard library and of course, lot of popular third party libraries. By convention, methods that launch goroutines accept `context.Context` as the first argument so the caller can manage their lifecycle safetly. Someimtes, we just want to invoke a method without caring much about goroutines and their lifetimes. That's where `context.TODO()` comes in.  According to the [documentation](https://pkg.go.dev/context#TODO),
 
-> TODO returns a non-nil, empty Context. Code should use context.TODO when it's unclear which Context to use or it is not yet available (because the surrounding function has not yet been extended to accept a Context parameter).
+> TODO returns a non-nil, empty Context. Code should use context.TODO when it's unclear which Context to use or it is not yet available because the surrounding function has not yet been extended to accept a Context parameter.
 
 
 Besides using to manage goroutine lifetimes, `Context` can also be used to store request scoped values while writing web sevices (roughly equivalent to `ThreadLocal` in thread-per-request java services). They can also be used to automatically schedule cancellation of goroutines (and all their children) if they don't finish in a specified duration. They're all very easy to understand and use, and are documented well in the links given below.

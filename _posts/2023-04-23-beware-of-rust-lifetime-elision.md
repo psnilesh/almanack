@@ -4,11 +4,12 @@ tags:
 - Programming
 - Rust
 layout: post
+excerpt_separator: "<!--more-->"
 ---
 
 # Introduction to Lifetimes
 
-Much has been said and written already about Rust's lifetimes. In summary, they enable the Rust borrow checker to determine how long a reference will be valid for. This is crucial because operating on a dead or stale reference can result in unpredictable behavior and memory unsafe programs, going back on the promise of Rust.
+Much has been said and written already about Rust's lifetimes. In summary, they enable the Rust borrow checker to determine how long a reference will be valid for. <!--more--> This is crucial because operating on a dead or stale reference can result in unpredictable behavior and memory unsafe programs, going back on the promise of Rust.
 
 Lets use a simple example to demonstrate how lifetimes help the borrow checker do its job.
 

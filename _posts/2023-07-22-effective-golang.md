@@ -4,9 +4,10 @@ tags:
 - Programming
 - Golang
 layout: post
+excerpt_separator: "<!--more-->"
 ---
 
-This is a collection of best practices and idioms I keep close for writing clean, concise and readable programs in [Go programming language.](https://go.dev/)
+This is a collection of best practices and idioms I keep close for writing clean, concise and readable programs in [Go programming language.](https://go.dev/) <!--more-->
 
 Jump to ...
 
@@ -42,15 +43,11 @@ func (c *MyConfig) String() string {
 type OptionFunc func(*MyConfig)
 
 func WithNumber(num int) OptionFunc {
-	return func(config *MyConfig) {
-		config.num = num
-	}
+	return func(config *MyConfig) { config.num = num }
 }
 
 func WithStr(str string) OptionFunc {
-	return func(config *MyConfig) {
-		config.str = str
-	}
+	return func(config *MyConfig) { config.str = str}
 }
 
 // MyConfig's constructor function
@@ -60,28 +57,19 @@ func NewConfig(ops ...OptionFunc) *MyConfig {
 		num: -1,
 		str: "hello",
 	}
-
 	for _, op := range ops {
 		op(config)
 	}
-
 	return config
 }
 
 func main() {
 	// Config with all defaul values
 	config1 := NewConfig()
-
 	// Config with non-default num and default str
-	config2 := NewConfig(
-		WithNumber(100),
-	)
-
+	config2 := NewConfig(WithNumber(100))
 	// Config with non-default num and str
-	config3 := NewConfig(
-		WithNumber(200),
-		WithStr("goodbye"),
-	)
+	config3 := NewConfig(WithNumber(200), WithStr("goodbye"))
 
 	fmt.Println(config1) // MyConfig{num: -1, str: hello}
 	fmt.Println(config2) // MyConfig{num: 100, str: hello}
@@ -152,28 +140,20 @@ go devs.
 ```golang
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
-type myError struct {
-	//
-}
+type myError struct {}
 
-func (e *myError) Error() string {
-	return "Stub message"
-}
+func (e *myError) Error() string { return "Stub message"; }
 
 func giveIncorrectError(i int) error {
 	// Golang has already learned the type of interface is myError,
 	// so nil checks on error returned from this method will always
 	// be false
 	var err *myError
-
 	if i < 0 {
 		err = &myError{}
 	}
-
 	return err
 }
 
@@ -181,11 +161,9 @@ func giveCorrectError(i int) error {
 	// No idea what kind of object this interface is pointing to
 	// so nil checks will return true
 	var err error
-
 	if i < 0 {
 		err = &myError{}
 	}
-
 	return err
 }
 
@@ -199,7 +177,6 @@ func main() {
 
 	fmt.Println(giveIncorrectError(-1) == nil) // Prints false
 	fmt.Println(giveIncorrectError(1) == nil)  // Prints false
-
 	fmt.Println(giveCorrectError(-1) == nil) // Prints false
 	fmt.Println(giveCorrectError(1) == nil)  // Prints true
 }
@@ -223,9 +200,7 @@ import (
 	"golang.org/x/exp/slog"
 )
 
-const (
-	CtxKeyRequestId = "RequestID"
-)
+const CtxKeyRequestId = "RequestID"
 
 type CustomSlogHandler struct {
 	slog.Handler
@@ -241,9 +216,7 @@ func (h CustomSlogHandler) Handle(ctx context.Context, r slog.Record) error {
 
 // package level logger
 var logger = slog.New(
-	CustomSlogHandler{
-		slog.NewJSONHandler(os.Stderr, nil),
-	},
+	CustomSlogHandler{slog.NewJSONHandler(os.Stderr, nil)},
 )
 
 func main() {
